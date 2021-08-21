@@ -1,0 +1,34 @@
+@import "../../assets/scss/base.scss";
+
+.content {
+  text-align: left;
+}
+
+.label {
+  min-width: 150px;
+  max-width: 150px;
+  font-weight: 500;
+}
+
+.tag {
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: 2px 4px;
+  border-radius: 4px;
+  margin-right: 8px;
+  margin-bottom: 4px;
+}
+
+.title {
+  position: relative;
+}
+
+.back-btn {
+  position: absolute;
+  left: 0;
+  font-size: 12px;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

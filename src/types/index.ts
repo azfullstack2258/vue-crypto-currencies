@@ -16,3 +16,11 @@ export interface ICurrencyMoreInfo extends ICurrency {
   maxSupply: number;
   lastUpdated: string;
 }
+
+export interface ITableColumn {
+  field: string;
+  label: string;
+  width?: number;
+  class?: string;
+  render?: (data: any) => any;
+}

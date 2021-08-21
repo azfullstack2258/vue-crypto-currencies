@@ -1,0 +1,7 @@
+@import "../../assets/scss/base.scss";
+
+.table-container {
+  width: 100%;
+  height: calc(100% - 36px);
+  overflow: auto;
+}

@@ -1,0 +1,34 @@
+.title {
+  font-size: 24px;
+  line-height: 36px;
+  font-weight: bold;
+}
+
+.loading-container, .error-container {
+  width: 100%;
+  height: calc(100% - 36px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.error-container {
+  color: #663030;
+}
+
+.row {
+  display: flex;
+  margin: 8px 0;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.flex-grow {
+  flex-grow: 1;
+}

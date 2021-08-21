@@ -7,6 +7,7 @@ import {
   fetchCurrencyHistorical,
   fetchCurrencyInfo
 } from "@/services/currency";
+import { transformCurrencyInfo } from "@/utils/helper";
 
 @Module({ namespaced: true })
 class Currency extends VuexModule {
@@ -74,7 +75,7 @@ class Currency extends VuexModule {
     try {
       const res = await fetchPopularCurrencies();
       // @todo: transform api response => currencies
-      currencies = res.data.data as ICurrency[];
+      currencies = res.data.data.map((currency: any) => transformCurrencyInfo(currency));
     } catch (e) {
       this.context.commit("setError", e.toString());
     }
@@ -99,7 +100,7 @@ class Currency extends VuexModule {
       const res = await fetchCurrencyInfo(symbol);
       this.context.commit("setCurrentCurrency", {
         key: "data",
-        value: res.data.data[symbol]
+        value: transformCurrencyInfo(res.data.data[symbol])
       });
     } catch (e) {
       this.context.commit("setCurrentCurrency", {
