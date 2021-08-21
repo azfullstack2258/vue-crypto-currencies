@@ -40,8 +40,10 @@
         </div>
         <div class="row flex-wrap">
           <div class="label">History:</div>
-          <div class="flex-grow chart-container">
-            <Chart />
+          <div v-if="historyLoading" class="loading-container">Loading</div>
+          <div v-if="historyError" class="error-container">{{ historyError }}</div>
+          <div v-if="!historyLoading && !historyError" class="flex-grow chart-container">
+            <Chart :data="currencyHistoricalData" />
           </div>
         </div>
       </div>
@@ -106,7 +108,16 @@ export default class CurrencyDetail extends Vue {
   }
 
   get currencyHistoricalData() {
-    return this.currentCurrencyHistorical?.data;
+    const data = this.currentCurrencyHistorical?.data;
+    const historyData = [];
+
+    if (data && Array.isArray(data.Data)) {
+      for (const item of data.Data) {
+        historyData.push({ date: item.time, value: item['transaction_count'] });
+      }
+    }
+
+    return historyData;
   }
 
   get historyLoading(): boolean {

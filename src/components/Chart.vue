@@ -1,5 +1,5 @@
 <template>
-  <div class="hello" ref="chartdiv">
+  <div class="chart" ref="chartdiv">
   </div>
 </template>
 
@@ -11,20 +11,25 @@ import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 am4core.useTheme(am4themes_animated);
 
 export default {
-  name: 'HelloWorld',
+  name: 'Chart',
+  props: {
+    data: {
+      type: Array,
+      default: () => []
+    }
+  },
+
+  data() {
+    return {
+      chart: null,
+    };
+  },
+
   mounted() {
     let chart = am4core.create(this.$refs.chartdiv, am4charts.XYChart);
 
     chart.paddingRight = 20;
-
-    let data = [];
-    let visits = 10;
-    for (let i = 1; i < 366; i++) {
-      visits += Math.round((Math.random() < 0.5 ? 1 : -1) * Math.random() * 10);
-      data.push({ date: new Date(2018, 0, i), name: "name" + i, value: visits });
-    }
-
-    chart.data = data;
+    chart.data = this.data;
 
     let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
     dateAxis.renderer.grid.template.location = 0;
@@ -45,6 +50,14 @@ export default {
     chart.scrollbarX = scrollbarX;
 
     this.chart = chart;
+  },
+
+  watch: {
+    data() {
+      if (this.chart) {
+        this.chart.data = this.data;
+      }
+    },
   },
 
   beforeDestroy() {
