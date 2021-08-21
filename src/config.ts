@@ -1,11 +1,16 @@
-const MIN_API_CRYPTOCOMPARE_API_KEY = process.env.VUE_APP_MIN_API_CRYPTOCOMPARE_API_KEY || '003aec75a078c67e182cdaf98fc2fde588ed0693514d3fc2d1c763409ccc25e0';
-const COINMARKETCAP_API_KEY = process.env.VUE_APP_COINMARKETCAP_API_KEY || '4f0576aa-6ef0-40a0-8c22-e095da27f98b';
-const MIN_API_CRYPTOCOMPARE_API_URL = 'https://min-api.cryptocompare.com';
-const COINMARKETCAP_API_URL = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency';
+const MIN_API_CRYPTOCOMPARE_API_KEY =
+  process.env.VUE_APP_MIN_API_CRYPTOCOMPARE_API_KEY ||
+  "003aec75a078c67e182cdaf98fc2fde588ed0693514d3fc2d1c763409ccc25e0";
+const COINMARKETCAP_API_KEY =
+  process.env.VUE_APP_COINMARKETCAP_API_KEY ||
+  "4f0576aa-6ef0-40a0-8c22-e095da27f98b";
+const MIN_API_CRYPTOCOMPARE_API_URL = "https://min-api.cryptocompare.com";
+const COINMARKETCAP_API_URL =
+  "https://pro-api.coinmarketcap.com/v1/cryptocurrency";
 
 export {
   MIN_API_CRYPTOCOMPARE_API_KEY,
   COINMARKETCAP_API_KEY,
   MIN_API_CRYPTOCOMPARE_API_URL,
-  COINMARKETCAP_API_URL
+  COINMARKETCAP_API_URL,
 };
