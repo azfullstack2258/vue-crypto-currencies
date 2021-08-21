@@ -2,6 +2,11 @@ import { VuexModule, Module, Mutation, Action } from 'vuex-module-decorators';
 import { ICurrency } from '@/types';
 import Vue from 'vue';
 
+import {
+  fetchPopularCurrencies,
+  fetchCurrencyHistorical
+} from '@/services/currency';
+
 @Module({ namespaced: true, name: 'currency' })
 class Currency extends VuexModule {
   public currencies: Array<ICurrency> = []
@@ -39,13 +44,19 @@ class Currency extends VuexModule {
 
   // ----- Start Actions -----
   @Action
-  public loadCurrencies(): void {
+  public async loadCurrencies(): Promise<void> {
     this.context.commit('setError', '');
     this.context.commit('setLoadingStatus', true);
 
     const currencies: ICurrency[] = [];
-    // @todo: fetch popular currencies
-    // handle any exceptions and set error state
+    try {
+      const res = await fetchPopularCurrencies();
+      // @todo: transform api response => currencies
+      // @ts-ignore
+      currencies = res.data.data;
+    } catch (e) {
+      this.context.commit('setError', e.toString());
+    }
 
     this.context.commit('setCurrencies', currencies);
 
@@ -53,13 +64,19 @@ class Currency extends VuexModule {
   }
 
   @Action
-  public loadCurrencyHistorical(symbol: string): void {
+  public async loadCurrencyHistorical(symbol: string): Promise<void> {
     this.context.commit('setCurrentCurrencyHistorical', { key: 'loading', value: true });
     this.context.commit('setCurrentCurrencyHistorical', { key: 'error', value: '' });
 
     const historicalData: Array<any> = [];
-    // @todo: fetch current currency historical data
-    // handle any exceptions and set error state
+    try {
+      const res = await fetchCurrencyHistorical(symbol);
+      // @todo: transform api response => historicalData
+      // @ts-ignore
+      historicalData = res.data.data;
+    } catch (e) {
+      this.context.commit('setError', e.toString());
+    }
 
     this.context.commit('setCurrentCurrencyHistorical', { key: 'data', value: historicalData });
     this.context.commit('setCurrentCurrencyHistorical', { key: 'loading', value: false });
