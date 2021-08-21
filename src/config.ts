@@ -6,7 +6,7 @@ const COINMARKETCAP_API_KEY =
   "4f0576aa-6ef0-40a0-8c22-e095da27f98b";
 const MIN_API_CRYPTOCOMPARE_API_URL = "https://min-api.cryptocompare.com";
 const COINMARKETCAP_API_URL =
-  "https://pro-api.coinmarketcap.com/v1/cryptocurrency";
+  "https://pro-api.coinmarketcap.com";
 
 export {
   MIN_API_CRYPTOCOMPARE_API_KEY,

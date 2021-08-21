@@ -5,19 +5,25 @@ import Vue from "vue";
 import {
   fetchPopularCurrencies,
   fetchCurrencyHistorical,
+  fetchCurrencyInfo
 } from "@/services/currency";
 
-@Module({ namespaced: true, name: "currency" })
+@Module({ namespaced: true })
 class Currency extends VuexModule {
   public currencies: Array<ICurrency> = [];
   public loading = false;
   public error = "";
-  public currentCurrencySymbol: string | undefined;
+  public currentCurrencySymbol = '';
+  public currentCurrency: {
+    loading: boolean;
+    error: string;
+    data: ICurrency | null
+  } = { loading: false, error: "", data: null };
   public currentCurrencyHistorical: {
     loading: boolean;
     error: string;
-    data: Array<any>;
-  } = { loading: false, error: "", data: [] };
+    data: any;
+  } = { loading: false, error: "", data: null };
 
   // ----- Start Mutations -----
   @Mutation
@@ -36,11 +42,6 @@ class Currency extends VuexModule {
   }
 
   @Mutation
-  public setCurrentCurrency(payload: string): void {
-    this.currentCurrencySymbol = payload;
-  }
-
-  @Mutation
   public setCurrentCurrencyHistorical({
     key,
     value,
@@ -50,10 +51,21 @@ class Currency extends VuexModule {
   }) {
     Vue.set(this.currentCurrencyHistorical, key, value);
   }
+
+  @Mutation
+  public setCurrentCurrency({
+    key,
+    value,
+  }: {
+    key: string;
+    value: any;
+  }) {
+    Vue.set(this.currentCurrency, key, value);
+  }
   // ----- End Mutations -----
 
   // ----- Start Actions -----
-  @Action
+  @Action({ rawError: true })
   public async loadCurrencies(): Promise<void> {
     this.context.commit("setError", "");
     this.context.commit("setLoadingStatus", true);
@@ -72,6 +84,36 @@ class Currency extends VuexModule {
     this.context.commit("setLoadingStatus", false);
   }
 
+  @Action({ rawError: true })
+  async loadCurrency(symbol: string): Promise<void> {
+    this.context.commit("setCurrentCurrency", {
+      key: "loading",
+      value: true,
+    });
+    this.context.commit("setCurrentCurrency", {
+      key: "error",
+      value: '',
+    });
+
+    try {
+      const res = await fetchCurrencyInfo(symbol);
+      this.context.commit("setCurrentCurrency", {
+        key: "data",
+        value: res.data.data[symbol]
+      });
+    } catch (e) {
+      this.context.commit("setCurrentCurrency", {
+        key: "error",
+        value: e && e.toString() || "Something went wrong.",
+      });
+    }
+
+    this.context.commit("setCurrentCurrency", {
+      key: "loading",
+      value: false,
+    });
+  }
+
   @Action
   public async loadCurrencyHistorical(symbol: string): Promise<void> {
     this.context.commit("setCurrentCurrencyHistorical", {
@@ -83,13 +125,16 @@ class Currency extends VuexModule {
       value: "",
     });
 
-    let historicalData: Array<any> = [];
+    let historicalData;
     try {
       const res = await fetchCurrencyHistorical(symbol);
       // @todo: transform api response => historicalData
-      historicalData = res.data.data as Array<any>;
+      historicalData = res.data.Data;
     } catch (e) {
-      this.context.commit("setError", e.toString());
+      this.context.commit("setCurrentCurrencyHistorical", {
+        key: "error",
+        value: e && e.toString() || "Something went wrong.",
+      });
     }
 
     this.context.commit("setCurrentCurrencyHistorical", {

@@ -5,10 +5,7 @@ import Currency from "@/store/modules/currency";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {},
-  mutations: {},
-  actions: {},
   modules: {
-    Currency,
+    currency: Currency,
   },
 });

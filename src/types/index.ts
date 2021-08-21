@@ -1,4 +1,4 @@
-export interface ICurrencyMeta {
+export interface ICurrency {
   id: number;
   name: string;
   symbol: string;
@@ -8,7 +8,7 @@ export interface ICurrencyMeta {
   description: string;
 }
 
-export interface ICurrency extends ICurrencyMeta {
+export interface ICurrencyMoreInfo extends ICurrency {
   cmcRank: number;
   numMarketPairs: number;
   circulatingSupply: number;
