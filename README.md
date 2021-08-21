@@ -4,6 +4,8 @@
 ```
 npm install
 ```
+- copy `.env.sample` file in root directory and rename it to `.env`
+
 
 ### Compiles and hot-reloads for development
 ```
