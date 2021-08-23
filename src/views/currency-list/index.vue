@@ -52,7 +52,6 @@ export default class CurrencyList extends Vue {
   }
 
   mounted() {
-    console.log('mounted', typeof this.loadCurrencies)
     this.loadCurrencies();
   }
 }
